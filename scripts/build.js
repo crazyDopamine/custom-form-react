@@ -37,7 +37,7 @@ const WARN_AFTER_CHUNK_GZIP_SIZE = 1024 * 1024
 const isInteractive = process.stdout.isTTY
 
 // Warn and crash if required files are missing
-if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
+if (!checkRequiredFiles([paths.appIndexJs])) {
   process.exit(1)
 }
 
@@ -58,7 +58,7 @@ checkBrowsers(paths.appPath, isInteractive)
     // if you're in it, you don't end up in Trash
     fs.emptyDirSync(paths.appBuild)
     // Merge with the public folder
-    copyPublicFolder()
+    // copyPublicFolder()
     // Start the webpack build
     return build(previousFileSizes)
   })
@@ -73,7 +73,9 @@ checkBrowsers(paths.appPath, isInteractive)
             " to learn more about each warning."
         )
         console.log(
-          "To ignore, add " + chalk.cyan("// eslint-disable-next-line") + " to the line before.\n"
+          "To ignore, add " +
+            chalk.cyan("// eslint-disable-next-line") +
+            " to the line before.\n"
         )
       } else {
         console.log(chalk.green("Compiled successfully.\n"))
@@ -93,7 +95,13 @@ checkBrowsers(paths.appPath, isInteractive)
       const publicUrl = paths.publicUrl
       const publicPath = config.output.publicPath
       const buildFolder = path.relative(process.cwd(), paths.appBuild)
-      printHostingInstructions(appPackage, publicUrl, publicPath, buildFolder, useYarn)
+      printHostingInstructions(
+        appPackage,
+        publicUrl,
+        publicPath,
+        buildFolder,
+        useYarn
+      )
     },
     err => {
       const tscCompileOnError = process.env.TSC_COMPILE_ON_ERROR === "true"
@@ -147,7 +155,9 @@ function build(previousFileSizes) {
           warnings: []
         })
       } else {
-        messages = formatWebpackMessages(stats.toJson({ all: false, warnings: true, errors: true }))
+        messages = formatWebpackMessages(
+          stats.toJson({ all: false, warnings: true, errors: true })
+        )
       }
       if (messages.errors.length) {
         // Only keep the first error. Others are often indicative
@@ -159,7 +169,8 @@ function build(previousFileSizes) {
       }
       if (
         process.env.CI &&
-        (typeof process.env.CI !== "string" || process.env.CI.toLowerCase() !== "false") &&
+        (typeof process.env.CI !== "string" ||
+          process.env.CI.toLowerCase() !== "false") &&
         messages.warnings.length
       ) {
         console.log(
@@ -180,9 +191,9 @@ function build(previousFileSizes) {
   })
 }
 
-function copyPublicFolder() {
-  fs.copySync(paths.appPublic, paths.appBuild, {
-    dereference: true,
-    filter: file => file !== paths.appHtml
-  })
-}
+// function copyPublicFolder() {
+//   fs.copySync(paths.appPublic, paths.appBuild, {
+//     dereference: true,
+//     filter: file => file !== paths.appHtml
+//   })
+// }
