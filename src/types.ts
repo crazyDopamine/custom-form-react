@@ -1,8 +1,11 @@
 import { ReactNode } from "react"
-import { BaseForm } from "./baseForm"
 import { Errors, RuleItem, Rules, Error, ValidatorOption } from "./validate.type"
 
 export * from "./validate.type"
+
+export interface BaseFormInterface {
+  [propName: string]: any
+}
 
 export interface FieldSet {
   key?: string
@@ -25,7 +28,7 @@ export interface FieldProps {
   value?: any
   onChange?(v: any, ...args): void
   error?: Error
-  form: BaseForm
+  form: BaseFormInterface
   fieldSet: FieldSet
   [propName: string]: any
 }

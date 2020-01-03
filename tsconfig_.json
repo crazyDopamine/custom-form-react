@@ -1,23 +1,27 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "module": "esnext",
     "experimentalDecorators": true,
     "lib": ["dom", "dom.iterable", "esnext"],
+    "typeRoots": ["./node_modules/@types"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
+    "isolatedModules": false,
+    "outDir": "./types/",
+    "declaration": true,
+    "declarationDir": "./types/",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
     "noEmit": true,
     "jsx": "react",
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "composite": true
   },
-  "include": ["src"],
-  "exclude": [
-    "../custom-form-react_/node_modules", "typings/main", "typings/main.d.ts"]
+  "include": ["./src/**/*", "./src/types.ts"],
+  "exclude": ["node_modules/*", "typings/main", "typings/main.d.ts"]
 }

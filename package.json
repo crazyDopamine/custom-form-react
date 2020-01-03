@@ -1,26 +1,35 @@
 {
   "name": "custom-form-react",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "customForm for react",
   "main": "index.js",
   "scripts": {
-    "start": "../custom-form-react_/node_modules/.bin/cross-env PORT=3001 node scripts/start.js",
-    "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "start": "cross-env PORT=3001 node scripts/start.js",
+    "build": "node ./scripts/build.js",
+    "test": "node ./scripts/test.js",
+    "tsc": "tsc"
   },
-  "keywords": [
-    "custom",
-    "form",
-    "react"
-  ],
+  "keywords": ["custom", "form", "react"],
   "author": "dongwei",
   "license": "ISC",
   "dependencies": {
-    "@babel/core": "7.6.0",
     "@svgr/webpack": "4.3.2",
     "@types/lodash": "^4.14.144",
     "@types/node": "12.11.7",
     "@types/react": "16.9.10",
+    "forward-ref": "^1.0.0",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "webpack": "4.41.0"
+  },
+  "devDependencies": {
+    "@babel/core": "7.6.0",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "@babel/preset-typescript": "^7.7.7",
     "@typescript-eslint/eslint-plugin": "^2.2.0",
     "@typescript-eslint/parser": "^2.2.0",
     "babel-eslint": "10.0.3",
@@ -28,17 +37,8 @@
     "babel-loader": "8.0.6",
     "babel-plugin-named-asset-import": "^0.3.4",
     "babel-preset-react-app": "^9.0.2",
-    "forward-ref": "^1.0.0",
-    "lodash": "^4.17.15",
-    "moment": "^2.24.0",
-    "react": "^16.11.0",
-    "react-dev-utils": "^9.1.0",
-    "react-dom": "^16.11.0",
-    "typescript": "3.6.4",
-    "webpack": "4.41.0"
-  },
-  "devDependencies": {
     "case-sensitive-paths-webpack-plugin": "^2.2.0",
+    "clean-webpack-plugin": "^3.0.0",
     "cross-env": "^6.0.3",
     "css-loader": "^3.2.1",
     "eslint": "^5.16.0",
@@ -59,30 +59,21 @@
     "postcss-normalize": "^8.0.1",
     "postcss-safe-parser": "^4.0.1",
     "prettier": "^1.18.2",
+    "react-dev-utils": "^9.1.0",
     "resolve-url-loader": "^3.1.1",
     "sass-loader": "^8.0.0",
+    "ts-loader": "^6.2.1",
+    "typescript": "3.6.4",
     "url-loader": "^3.0.0",
     "webpack-manifest-plugin": "^2.2.0",
     "workbox-webpack-plugin": "^4.3.1"
   },
   "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "production": [">0.2%", "not dead", "not op_mini all"],
+    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
   },
   "babel": {
-    "presets": [
-      "react-app"
-    ]
-  },
-  "eslintConfig": {
-    "extends": "react-app"
+    "presets": ["@babel/env", "@babel/preset-typescript"],
+    "plugins": ["@babel/proposal-class-properties", "@babel/proposal-object-rest-spread"]
   }
 }

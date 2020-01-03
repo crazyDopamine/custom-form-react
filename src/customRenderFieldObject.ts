@@ -4,8 +4,7 @@ import {
   CustomRenderFieldProps,
   FieldSet,
   FieldProps,
-  FieldState,
-  RuleItem
+  FieldState
 } from "./types"
 import { BaseField } from "./baseField"
 

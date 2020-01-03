@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react"
+import React, { ComponentClass, ReactNode } from "react"
 import { BaseField } from "./baseField"
 import { defaultsDeep, get, pick, set, toString } from "lodash"
 import {
@@ -13,23 +13,15 @@ import {
   RuleItem,
   Rules,
   RuleType,
-  ValidateResult
+  ValidateResult,
+  BaseFormInterface
 } from "./types"
 import { CustomRenderFieldArray } from "./customRenderFieldArray"
 import { CustomRenderFieldObject } from "./customRenderFieldObject"
 import { validate } from "./validate"
 
-function getFieldsMap(fields: Array<FieldSet> = []): Map<string, FieldSet> {
-  const fieldsMap = new Map<string, FieldSet>()
-  fields
-    .filter(f => f.key)
-    .forEach(f => {
-      fieldsMap.set(f.key as string, f)
-    })
-  return fieldsMap
-}
-
-export class BaseForm extends React.Component<BaseFormProps, BaseFormState> {
+export class BaseForm extends React.Component<BaseFormProps, BaseFormState>
+  implements BaseFormInterface {
   static defaultProps = {
     validateTrigger: "onChange",
     validateFirst: false,
@@ -193,7 +185,7 @@ export class BaseForm extends React.Component<BaseFormProps, BaseFormState> {
       return render.call(this, props, { renderField: this.renderField.bind(this) })
     }
     if (Component) {
-      return <Component {...props} key={domKey || key} />
+      return React.createElement(Component as ComponentClass, { ...props, key: domKey || key }) //<Component {...props} key={domKey || key} />
     } else {
       return null
     }
@@ -216,4 +208,14 @@ export class BaseForm extends React.Component<BaseFormProps, BaseFormState> {
             : renderField.call(this, f)
         )
   }
+}
+
+function getFieldsMap(fields: Array<FieldSet> = []): Map<string, FieldSet> {
+  const fieldsMap = new Map<string, FieldSet>()
+  fields
+    .filter(f => f.key)
+    .forEach(f => {
+      fieldsMap.set(f.key as string, f)
+    })
+  return fieldsMap
 }
