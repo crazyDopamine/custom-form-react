@@ -1,0 +1,22 @@
+import { Rules, ValidateResult, RuleType, RuleItem } from "./validate.type";
+declare function requiredValidateFn(v: any): boolean;
+declare function maxValidateFn(v: any, rule: RuleItem): boolean;
+declare function minValidateFn(v: any, rule: RuleItem): boolean;
+declare function maxLengthValidateFn(v: any, rule: RuleItem): boolean;
+declare function minLengthValidateFn(v: any, rule: RuleItem): boolean;
+export declare const validateFn: {
+    required: typeof requiredValidateFn;
+    max: typeof maxValidateFn;
+    min: typeof minValidateFn;
+    maxLength: typeof maxLengthValidateFn;
+    minLength: typeof minLengthValidateFn;
+    string: (v: any) => boolean;
+    number: (v: any) => boolean;
+    integer: (v: any) => boolean;
+    boolean: (v: any) => boolean;
+    object: (v: any) => boolean;
+    array: (v: any) => boolean;
+    date: (v: any) => boolean;
+};
+export declare function validate(value: object, rules: Rules): Promise<ValidateResult>;
+export {};
