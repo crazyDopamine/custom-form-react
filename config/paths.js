@@ -56,7 +56,7 @@ module.exports = {
   appPublic: resolveApp("public"),
   appHtml: resolveApp("public/index.html"),
   libIndexJs: resolveModule(resolveApp, "src/index"),
-  libComponentsJs: resolveModule(resolveApp, "src/components"),
+  libComponentsJs: { antD: resolveModule(resolveApp, "src/formAntD") },
   appIndexJs: resolveModule(resolveApp, "src/app"),
   appPackageJson: resolveApp("package.json"),
   appSrc: resolveApp("src"),

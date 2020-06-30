@@ -130,7 +130,7 @@ module.exports = function (webpackEnv) {
     // These are the "entry points" to our application.
     // This means they will be the "root" imports that are included in JS bundle.
     entry: isEnvProduction
-      ? { index: paths.libIndexJs, components: paths.libComponentsJs }
+      ? { index: paths.libIndexJs, ...paths.libComponentsJs }
       : isEnvDevelopment &&
         [
           paths.appIndexJs,
