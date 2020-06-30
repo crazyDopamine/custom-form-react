@@ -8,10 +8,7 @@
   },
   "extends": ["react-app", "prettier"],
   "globals": {
-    "_": true,
-    "moment": true,
-    "$": true,
-    "define": true
+    "moment": true
   },
   "rules": {
     "eqeqeq": 0,

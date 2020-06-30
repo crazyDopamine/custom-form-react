@@ -1,4 +1,12 @@
-import { Rules, ValidateResult, RuleType, Errors, Error, RuleItem } from "./validate.type"
+import {
+  Rules,
+  ValidateResult,
+  RuleType,
+  ValidateErrors,
+  ValidateError,
+  RuleItem,
+  TypeValidates,
+} from "./validate.type"
 import {
   isString,
   isNumber,
@@ -12,19 +20,20 @@ import {
   toNumber,
   values,
   get,
-  keys
+  keys,
+  zipObject,
 } from "lodash"
 import moment from "moment"
 
-function requiredValidateFn(v) {
+function requiredValidateFn(v: any) {
   if (isArray(v)) {
     return !isEmpty(v)
   } else {
-    return !isNull(v) && !isUndefined(v)
+    return !isNull(v) && !isUndefined(v) && v !== ""
   }
 }
 
-function maxValidateFn(v, rule: RuleItem) {
+function maxValidateFn(v: any, rule: RuleItem) {
   if (isNumber(v) && isNumber(rule.max)) {
     return toNumber(v) <= toNumber(rule.max)
   } else {
@@ -32,7 +41,7 @@ function maxValidateFn(v, rule: RuleItem) {
   }
 }
 
-function minValidateFn(v, rule: RuleItem) {
+function minValidateFn(v: any, rule: RuleItem) {
   if (isNumber(v) && isNumber(rule.min)) {
     return toNumber(v) >= toNumber(rule.min)
   } else {
@@ -40,7 +49,7 @@ function minValidateFn(v, rule: RuleItem) {
   }
 }
 
-function maxLengthValidateFn(v, rule: RuleItem) {
+function maxLengthValidateFn(v: any, rule: RuleItem) {
   if (isArray(v) || isString(v)) {
     return v.length <= (rule.maxLength || Number.MAX_SAFE_INTEGER)
   } else {
@@ -48,7 +57,7 @@ function maxLengthValidateFn(v, rule: RuleItem) {
   }
 }
 
-function minLengthValidateFn(v, rule: RuleItem) {
+function minLengthValidateFn(v: any, rule: RuleItem) {
   if (isArray(v) || isString(v)) {
     return v.length >= (rule.minLength || 0)
   } else {
@@ -57,21 +66,33 @@ function minLengthValidateFn(v, rule: RuleItem) {
 }
 
 const typeValidateFn = {
-  [RuleType.string]: v => isString(v),
-  [RuleType.number]: v => isNumber(v),
-  [RuleType.integer]: v => isInteger(v),
-  [RuleType.boolean]: v => isBoolean(v),
-  [RuleType.object]: v => isObject(v),
-  [RuleType.array]: v => isArray(v),
-  [RuleType.date]: v => moment(v).isValid()
+  [RuleType.string]: (v: any) => isString(v),
+  [RuleType.number]: (v: any) => isNumber(v),
+  [RuleType.integer]: (v: any) => isInteger(v),
+  [RuleType.boolean]: (v: any) => isBoolean(v),
+  [RuleType.object]: (v: any) => isObject(v),
+  [RuleType.array]: (v: any) => isArray(v),
+  [RuleType.date]: (v: any) => moment(v).isValid(),
 }
 
-const typeValidateMap = {
-  [RuleType.string]: { maxLength: maxLengthValidateFn, minLength: minLengthValidateFn },
-  [RuleType.number]: { max: maxValidateFn, min: minValidateFn },
-  [RuleType.integer]: { max: maxValidateFn, min: minValidateFn },
-  [RuleType.array]: { maxLength: maxLengthValidateFn, minLength: minLengthValidateFn }
-}
+const typeValidateMap = new Map<RuleType, TypeValidates>([
+  [
+    RuleType.string,
+    {
+      maxLength: maxLengthValidateFn,
+      minLength: minLengthValidateFn,
+    } as TypeValidates,
+  ],
+  [RuleType.number, { max: maxValidateFn, min: minValidateFn } as TypeValidates],
+  [RuleType.integer, { max: maxValidateFn, min: minValidateFn } as TypeValidates],
+  [
+    RuleType.array,
+    {
+      maxLength: maxLengthValidateFn,
+      minLength: minLengthValidateFn,
+    } as TypeValidates,
+  ],
+])
 
 export const validateFn = {
   ...typeValidateFn,
@@ -79,10 +100,10 @@ export const validateFn = {
   max: maxValidateFn,
   min: minValidateFn,
   maxLength: maxLengthValidateFn,
-  minLength: minLengthValidateFn
+  minLength: minLengthValidateFn,
 }
 
-function getMessage(error: Error) {}
+// function getMessage(error: ValidateError) {}
 
 export function validate(
   value: object,
@@ -91,11 +112,11 @@ export function validate(
 ): Promise<ValidateResult> {
   // const first = options && options.first
   return new Promise<ValidateResult>(resolve => {
-    const errors: Errors = {}
-    const errorList: Error[] = []
+    let errors: ValidateErrors = {}
+    let errorList: ValidateError[] = []
     const ruleItems = values(rules)
-    const ps: Promise<Error>[] = []
-    ruleItems.forEach(rule => {
+    const ps: Promise<ValidateError>[] = []
+    ruleItems.forEach((rule: RuleItem) => {
       const v = get(value, rule.key, undefined)
       const error = {
         key: rule.key,
@@ -107,8 +128,8 @@ export function validate(
         max: false,
         min: false,
         validator: false,
-        message: ""
-      } as Error
+        message: "",
+      } as ValidateError
       if (rule.required && !validateFn.required(v)) {
         error.required = true
         error.valid = false
@@ -121,12 +142,10 @@ export function validate(
         error.message = rule.label + "类型错误"
         errors[error.key] = error
         errorList.push(error)
-      } else if (typeValidateMap[rule.type]) {
-        const ks = keys(typeValidateMap[rule.type]).filter(
-          k => rule[k] != undefined && rule[k] != null
-        )
-        ks.forEach(k => {
-          if (!typeValidateMap[rule.type][k](v, rule)) {
+      } else if (typeValidateMap.get(rule.type)) {
+        const typeValidates = typeValidateMap.get(rule.type)
+        keys(typeValidates).forEach(k => {
+          if (typeValidates && !!typeValidates[k] && !typeValidates[k](v, rule)) {
             error[k] = true
             error.valid = false
             error.message = rule.label + "错误"
@@ -141,13 +160,21 @@ export function validate(
     })
     if (ps.length) {
       Promise.all(ps).then(results => {
-        console.log(results)
+        const validatorErrors = results.filter(i => !i.valid)
+        errorList = [...errorList, ...validatorErrors]
+        errors = {
+          ...errors,
+          ...zipObject(
+            validatorErrors.map(i => i.key),
+            validatorErrors
+          ),
+        }
         resolve({
           value,
           valid: errorList.filter(i => !i.valid).length <= 0,
           errors,
           errorList,
-          rules
+          rules,
         } as ValidateResult)
       })
     } else {
@@ -156,7 +183,7 @@ export function validate(
         valid: errorList.filter(i => !i.valid).length <= 0,
         errors,
         errorList,
-        rules
+        rules,
       } as ValidateResult)
     }
   })

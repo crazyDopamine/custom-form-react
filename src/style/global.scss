@@ -1,0 +1,33 @@
+$fsS: 12px;
+$fsM: 14px;
+$fsL: 16px;
+$fsXL: 18px;
+$fsXXL: 24px;
+
+$fs: $fsM;
+$fsRemark: $fsS;
+$fsTitle: $fsL;
+$fsTitleStrong: $fsXL;
+$fsTitleS: $fsXL;
+$fsTitleSuperStrong: $fsXXL;
+$fsTitleSS: $fsXXL;
+
+$padding: 24px;
+$paddingS: 16px;
+$paddingSS: 8px;
+$margin: 24px;
+$marginS: 16px;
+$marginSS: 8px;
+
+//页面
+$zIndexPage: 1;
+//组件
+$zIndexComponent: 10;
+// imSimple
+$zIndexImSimple: 98;
+$zIndexImMsgList: 99;
+//弹出框
+$zIndexModal: 100;
+//弹出消息
+$zIndexMsg: 1000;
+$zIndexMax: 9999;

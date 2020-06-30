@@ -4,7 +4,7 @@
 process.env.BABEL_ENV = "production"
 process.env.NODE_ENV = "production"
 
-// Makes the scripts crash on unhandled rejections instead of silently
+// Makes the script crash on unhandled rejections instead of silently
 // ignoring them. In the future, promise rejections that are not handled will
 // terminate the Node.js process with a non-zero exit code.
 process.on("unhandledRejection", err => {
@@ -29,6 +29,7 @@ const printBuildError = require("react-dev-utils/printBuildError")
 const measureFileSizesBeforeBuild = FileSizeReporter.measureFileSizesBeforeBuild
 const printFileSizesAfterBuild = FileSizeReporter.printFileSizesAfterBuild
 const useYarn = fs.existsSync(paths.yarnLockFile)
+const startTime = new Date().getTime()
 
 // These sizes are pretty large. We'll warn for bundles exceeding them.
 const WARN_AFTER_BUNDLE_GZIP_SIZE = 512 * 1024
@@ -42,7 +43,7 @@ if (!checkRequiredFiles([paths.appIndexJs])) {
 }
 
 // Generate configuration
-const config = configFactory()
+const config = configFactory("production")
 
 // We require that you explicitly set browsers and do not fall back to
 // browserslist defaults.
@@ -58,7 +59,6 @@ checkBrowsers(paths.appPath, isInteractive)
     // if you're in it, you don't end up in Trash
     fs.emptyDirSync(paths.appBuild)
     // Merge with the public folder
-    // copyPublicFolder()
     // Start the webpack build
     return build(previousFileSizes)
   })
@@ -90,10 +90,11 @@ checkBrowsers(paths.appPath, isInteractive)
       console.log()
 
       const appPackage = require(paths.appPackageJson)
-      const publicUrl = paths.publicUrl
+      const publicUrl = paths.publicUrlOrPath
       const publicPath = config.output.publicPath
       const buildFolder = path.relative(process.cwd(), paths.appBuild)
       printHostingInstructions(appPackage, publicUrl, publicPath, buildFolder, useYarn)
+      console.log(`build finish in ${(new Date().getTime() - startTime) / 1000}s`)
     },
     err => {
       const tscCompileOnError = process.env.TSC_COMPILE_ON_ERROR === "true"
@@ -142,9 +143,17 @@ function build(previousFileSizes) {
         if (!err.message) {
           return reject(err)
         }
+
+        let errMessage = err.message
+
+        // Add additional information for postcss errors
+        if (Object.prototype.hasOwnProperty.call(err, "postcssNode")) {
+          errMessage += "\nCompileError: Begins at CSS selector " + err["postcssNode"].selector
+        }
+
         messages = formatWebpackMessages({
-          errors: [err.message],
-          warnings: []
+          errors: [errMessage],
+          warnings: [],
         })
       } else {
         messages = formatWebpackMessages(stats.toJson({ all: false, warnings: true, errors: true }))
@@ -174,15 +183,8 @@ function build(previousFileSizes) {
       return resolve({
         stats,
         previousFileSizes,
-        warnings: messages.warnings
+        warnings: messages.warnings,
       })
     })
   })
 }
-
-// function copyPublicFolder() {
-//   fs.copySync(paths.appPublic, paths.appBuild, {
-//     dereference: true,
-//     filter: file => file !== paths.appHtml
-//   })
-// }

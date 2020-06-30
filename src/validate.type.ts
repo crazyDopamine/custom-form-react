@@ -14,7 +14,8 @@ export interface RuleItem {
   minLength?: number
   max?: number
   min?: number
-  validator?(value: any, validatorOption: ValidatorOption): Promise<Error>
+  validator?(value: any, validatorOption: ValidatorOption): Promise<ValidateError>
+  [name: string]: any
 }
 
 export enum RuleType {
@@ -25,10 +26,19 @@ export enum RuleType {
   object = "object",
   array = "array",
   date = "date",
-  any = "any"
+  any = "any",
 }
 
-export interface Error {
+export interface TypeValidates {
+  required?: (v: any) => boolean
+  max?: (v: any) => boolean
+  min?: (v: any) => boolean
+  maxLength?: (v: any) => boolean
+  minLength?: (v: any) => boolean
+  [name: string]: any
+}
+
+export interface ValidateError {
   key: string
   valid: boolean
   type: boolean
@@ -40,17 +50,18 @@ export interface Error {
   validator: boolean
   message: string
   className: string
+  [name: string]: any
 }
 
-export interface Errors {
-  [key: string]: Error
+export interface ValidateErrors {
+  [key: string]: ValidateError
 }
 
 export interface ValidateResult {
   value: object
   valid: boolean
-  errors: Errors
-  errorList: Error[]
+  errors: ValidateErrors
+  errorList: ValidateError[]
   rules: Rules
 }
 

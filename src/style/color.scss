@@ -1,0 +1,88 @@
+//标准色
+$blueL: #42e0fc;
+$blue: #3b7cff;
+$blueD: #3775f2;
+$blueXD: #3269d9;
+$navyBlue: #576cd3;
+$purple: #9013fe;
+$purple1a: #9013fe1a;
+$orange: #ff8f00;
+
+//主题
+$cTheme: $blue;
+$cTheme05: #3b7cff05;
+$cTheme1a: #3b7cff1a;
+$cTheme33: #3b7cff33;
+//菜单/按钮/文字hover颜色
+$cHover: $blueD;
+$cThemeHover: $blueD;
+//菜单/按钮/文字active#8392A7颜色
+$cActive: $blueXD;
+$cThemeActive: $blueXD;
+
+//文字
+$cFontW: #fff;
+$cFont: #606b79;
+$cFontL: #99a2ad;
+$cFontXL: #b5bac4;
+$cFontD: #3b4859;
+$cFontTitle: #4a4a4a;
+$cFontBtn: #2a5bc7;
+$cFontBtnDetail: #42e0fc;
+$cFontBtnUpload: #fb745b;
+$cFontQW: #38485b;
+
+$cComponentText: $cFontXL;
+$cText: $cFontL;
+$cFontDefault: $cFont;
+$cTitle: $cFontD;
+$cFontActive: #ffffff;
+$cFontGray: #97a2ae;
+
+//背景
+//整体页面背景色
+$cBg: #f2f4f7;
+$cBgPage: #fff;
+$cBgColor: #f8f8f8;
+$cBgComponent: #fff;
+$cBgGray: #f8f8f8;
+$cBgGrayL: #f0f2f5;
+//即时通讯置顶底色
+$cBgIMTop: #f2f4f7;
+//聊天背景色
+$cBgIM: #f2f4f7;
+$cBgActive: $cTheme;
+$BgDisabled: #e8eaed;
+
+//边框
+$cBgGray: #f2f4f7;
+$cBorder: #d7d8db;
+$cTableBorder: #aeb9ca;
+$cLabelBorder: #faa533;
+
+//分割线
+$cDividerColor: #e5e5e5;
+
+//边框阴影
+$cBorderShadow: #d0d0d0;
+
+//状态
+$cSuccess: #7ed321;
+$cFail: #f50000;
+$cError: #f50000;
+$cError1a: #f500001a;
+$cError0c: #f500000c;
+$cProcessing: #2a5bc7;
+$cTimeout: #fb745b;
+$cTimeout1a: #fb745b1a;
+$cWarn: #ff8f00;
+$cWarn1a: #ff8f001a;
+$cTag: #ff8f00;
+//失效/禁用
+$cDisabled: #d7d8db;
+
+//辅助色
+$cAssist1: $orange;
+$cAssist2: $purple;
+$cAssist3: $blueL;
+$cAssist4: $navyBlue;

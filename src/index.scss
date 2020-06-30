@@ -1,0 +1,93 @@
+$rowHeight: 32px;
+$labelMargin: 6px;
+$rowMargin: 20px;
+$defaultFieldWidth: 200px;
+
+.gwy-form {
+  .gwy-form-field {
+    display: inline-block;
+    width: 100%;
+    min-height: $rowHeight;
+    &:not(:last-child) {
+      margin-bottom: $rowMargin;
+    }
+    .gwy-form-field-label {
+      display: inline-block;
+      width: 200px;
+      line-height: 20px;
+      text-align: right;
+      padding: $labelMargin 10px;
+      vertical-align: top;
+      .label-required {
+        color: #b31010;
+      }
+    }
+    .gwy-form-field-component {
+      display: inline-block;
+      width: calc(100% - 200px);
+      min-height: $rowHeight;
+      vertical-align: top;
+      > * {
+        vertical-align: top;
+      }
+      .error-msg {
+        text-align: left;
+        padding-top: 8px;
+        color: red;
+      }
+      .help-text {
+        padding-top: 8px;
+        color: #8c8c8c;
+      }
+    }
+  }
+}
+
+.gwy-form-field-component {
+  > .ant-input-affix-wrapper {
+    min-width: $defaultFieldWidth;
+    width: 100%;
+  }
+  > button.ant-switch {
+    margin-top: 6px;
+  }
+  > .ant-checkbox-wrapper {
+    margin-top: 6px;
+  }
+  > .ant-checkbox-group {
+    margin-top: 6px;
+  }
+  > .ant-select {
+    min-width: $defaultFieldWidth;
+    width: 100%;
+  }
+  > .ant-input-number {
+    min-width: $defaultFieldWidth;
+    width: 100%;
+  }
+  > .ant-calendar-picker {
+    min-width: $defaultFieldWidth;
+    width: 100%;
+  }
+  > .ant-time-picker {
+    min-width: $defaultFieldWidth;
+    width: 100%;
+  }
+  > .ant-cascader-picker {
+    min-width: $defaultFieldWidth;
+    width: 100%;
+  }
+  .un-editable-text {
+    position: relative;
+    top: 4px;
+  }
+}
+
+.gwy-field-array {
+  position: relative;
+}
+
+.ant-input-number.has-error,
+.ant-input-number.has-error:hover {
+  border-color: #f5222d;
+}

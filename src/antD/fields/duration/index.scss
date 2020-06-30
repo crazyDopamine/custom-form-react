@@ -1,0 +1,16 @@
+.time-input-area {
+  white-space: nowrap;
+  vertical-align: middle;
+  text-align: left;
+  > * {
+    display: inline-block;
+    padding-right: 5px;
+    line-height: 36px;
+  }
+  .time-input-number {
+    width: 80px;
+    .ant-input-number {
+      width: 100%;
+    }
+  }
+}

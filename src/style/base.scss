@@ -1,0 +1,325 @@
+$baseBorderColor: $cBorder;
+
+.float-left {
+  float: left !important;
+}
+
+.float-right {
+  float: right !important;
+}
+
+.text-left {
+  text-align: left !important;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.text-middle {
+  vertical-align: middle !important;
+}
+
+.text-bottom {
+  vertical-align: text-bottom !important;
+}
+
+.hide {
+  display: none !important;
+}
+
+.border {
+  border: 1px solid $baseBorderColor;
+}
+
+.border-right {
+  border-right: 1px solid $baseBorderColor;
+}
+
+.border-top {
+  border-top: 1px solid $baseBorderColor;
+}
+
+.border-bottom {
+  border-bottom: 1px solid $baseBorderColor;
+}
+
+.border-bottom-dashed {
+  border-bottom: 1px dashed $baseBorderColor;
+}
+
+.border-left {
+  border-left: 1px solid $baseBorderColor;
+}
+
+.border-bottom-0 {
+  border-bottom: 0 !important;
+}
+
+.border-left-0 {
+  border-left: 0 !important;
+}
+
+.border-right-0 {
+  border-right: 0 !important;
+}
+
+.border-top-0 {
+  border-top: 0 !important;
+}
+
+.border-0 {
+  border: none !important;
+}
+
+.overflow-auto {
+  overflow: auto;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.clearfix {
+  &:after {
+    content: "";
+    display: inline-block;
+    clear: both;
+  }
+}
+
+.text-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin clearfix {
+  &:after {
+    content: "";
+    display: inline-block;
+    clear: both;
+  }
+}
+
+@mixin hCenter {
+  position: relative !important;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+@mixin vCenter {
+  position: relative !important;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+@mixin hvCenter {
+  position: relative !important;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.h-center {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.v-center {
+  position: relative !important;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.hv-center {
+  position: relative !important;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+$marginArray: (
+  0: 0,
+  4: 4px,
+  5: 5px,
+  8: 8px,
+  10: 10px,
+  15: 15px,
+  16: 16px,
+  20: 20px,
+  24: 24px,
+  25: 25px,
+  30: 30px,
+  32: 32px,
+  40: 40px
+);
+
+/**
+margin-0 ...
+margin-left-0 ...
+margin-top-0 ...
+margin-right-0 ...
+margin-bottom-0 ...
+ */
+@each $marginArray, $margin in $marginArray {
+  .margin-#{$marginArray} {
+    margin: $margin !important;
+  }
+}
+
+@each $marginArray, $margin in $marginArray {
+  .margin-left-#{$marginArray} {
+    margin-left: $margin !important;
+  }
+}
+
+@each $marginArray, $margin in $marginArray {
+  .margin-right-#{$marginArray} {
+    margin-right: $margin !important;
+  }
+}
+
+@each $marginArray, $margin in $marginArray {
+  .margin-top-#{$marginArray} {
+    margin-top: $margin !important;
+  }
+}
+
+@each $marginArray, $margin in $marginArray {
+  .margin-bottom-#{$marginArray} {
+    margin-bottom: $margin !important;
+  }
+}
+
+/**
+padding-0 ...
+padding-left-0 ...
+padding-top-0 ...
+padding-right-0 ...
+padding-bottom-0 ...
+ */
+@each $marginArray, $margin in $marginArray {
+  .padding-#{$marginArray} {
+    padding: $margin !important;
+  }
+}
+
+@each $marginArray, $margin in $marginArray {
+  .padding-left-#{$marginArray} {
+    padding-left: $margin !important;
+  }
+}
+
+@each $marginArray, $margin in $marginArray {
+  .padding-right-#{$marginArray} {
+    padding-right: $margin !important;
+  }
+}
+
+@each $marginArray, $margin in $marginArray {
+  .padding-top-#{$marginArray} {
+    padding-top: $margin !important;
+  }
+}
+
+@each $marginArray, $margin in $marginArray {
+  .padding-bottom-#{$marginArray} {
+    padding-bottom: $margin !important;
+  }
+}
+
+/**
+line-height-0 ...
+ */
+$lineHeightArray: (
+  1: 1,
+  1_5: 1.5,
+  20: 20px,
+  30: 30px,
+  40: 40px,
+  50: 50px,
+  60: 60px
+);
+
+@each $lineHeightN, $lineHeight in $lineHeightArray {
+  .line-height-#{$lineHeightN} {
+    line-height: $lineHeight !important;
+  }
+}
+
+@each $marginArray, $margin in $marginArray {
+  .margin-#{$marginArray} {
+    margin: $margin !important;
+  }
+}
+
+$fsArray: (
+  fs-s: $fsS,
+  fs-m: $fsM,
+  fs-l: $fsL,
+  fs-xl: $fsXL,
+  fs-xxl: $fsXXL
+);
+
+@each $fsArray, $font-size in $fsArray {
+  .#{$fsArray} {
+    font-size: $font-size !important;
+  }
+}
+
+$fcArray: (
+  fc: $cFont,
+  fc-white: #ffffff,
+  fc-component: $cComponentText,
+  fc-text: $cText,
+  fc-text-d: $cFontD,
+  fc-theme: $cTheme,
+  fc-warn: $cWarn,
+  fc-red: $cError,
+  fc-assist-1: $cAssist1,
+  fc-assist-2: $cAssist2,
+  fc-assist-3: $cAssist3,
+  fc-assist-4: $cAssist4
+);
+
+@each $fcArray, $font-color in $fcArray {
+  .#{$fcArray} {
+    color: $font-color !important;
+  }
+}
+
+$bgArray: (
+  bg: $cBg,
+  bg-im-top: $cBgIMTop,
+  bg-im: $cBgIM,
+  bg-active: $cBgActive,
+  bg-transparent: transparent,
+  bg-white: #ffffff
+);
+
+@each $bgArray, $bg in $bgArray {
+  .#{$bgArray} {
+    background-color: $bg !important;
+  }
+}
+
+.fw-600 {
+  font-family: PingFangSC-Semibold;
+  font-weight: 600;
+}
+
+.fw-500 {
+  font-family: PingFangSC-Semibold;
+  font-weight: 500;
+}
+
+.fw-400 {
+  font-family: PingFangSC-Regular, PingFangSC;
+  font-weight: 400;
+}
