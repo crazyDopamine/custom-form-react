@@ -476,12 +476,3 @@ export const demoProps = {
     },
   ],
 }
-
-// for (let i = 0; i <= 100; i++) {
-//   demoProps.fields.push({
-//     key: "input-" + i,
-//     label: "input-" + i,
-//     type: "input",
-//     required: true,
-//   })
-// }
