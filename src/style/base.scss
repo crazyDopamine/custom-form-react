@@ -86,7 +86,7 @@ $baseBorderColor: $cBorder;
 
 .clearfix {
   &:after {
-    content: "";
+    content: '';
     display: inline-block;
     clear: both;
   }
@@ -100,7 +100,7 @@ $baseBorderColor: $cBorder;
 
 @mixin clearfix {
   &:after {
-    content: "";
+    content: '';
     display: inline-block;
     clear: both;
   }

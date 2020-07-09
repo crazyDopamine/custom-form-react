@@ -1,16 +1,17 @@
-import { RuleItem } from "../validate.type";
+import { RuleItem } from '../validate.type';
 export declare const demoProps: {
-    editable: boolean;
-    fieldLayout: {
-        span: number;
-        labelStyle: {
-            width: string;
-        };
-        wrapperStyle: {
-            width: string;
-        };
+  editable: boolean;
+  fieldLayout: {
+    span: number;
+    labelStyle: {
+      width: string;
     };
-    fields: ({
+    wrapperStyle: {
+      width: string;
+    };
+  };
+  fields: (
+    | {
         key: string;
         label: string;
         type: string;
@@ -33,7 +34,8 @@ export declare const demoProps: {
         minLength?: undefined;
         maxLength?: undefined;
         fields?: undefined;
-    } | {
+      }
+    | {
         key: string;
         label: string;
         type: string;
@@ -42,12 +44,15 @@ export declare const demoProps: {
         allowClear: boolean;
         helpText: string;
         hidden: boolean;
-        validator: (value: any, op: {
+        validator: (
+          value: any,
+          op: {
             rule: RuleItem;
             values: {
-                password: any;
+              password: any;
             };
-        }) => Promise<unknown>;
+          }
+        ) => Promise<unknown>;
         style?: undefined;
         editable?: undefined;
         optionKey?: undefined;
@@ -61,7 +66,8 @@ export declare const demoProps: {
         minLength?: undefined;
         maxLength?: undefined;
         fields?: undefined;
-    } | {
+      }
+    | {
         key: string;
         label: string;
         type: string;
@@ -69,7 +75,7 @@ export declare const demoProps: {
         br: boolean;
         allowClear: boolean;
         style: {
-            width: string;
+          width: string;
         };
         helpText?: undefined;
         hidden?: undefined;
@@ -86,7 +92,8 @@ export declare const demoProps: {
         minLength?: undefined;
         maxLength?: undefined;
         fields?: undefined;
-    } | {
+      }
+    | {
         key: string;
         label: string;
         type: string;
@@ -109,7 +116,8 @@ export declare const demoProps: {
         minLength?: undefined;
         maxLength?: undefined;
         fields?: undefined;
-    } | {
+      }
+    | {
         key: string;
         label: string;
         type: string;
@@ -132,7 +140,8 @@ export declare const demoProps: {
         minLength?: undefined;
         maxLength?: undefined;
         fields?: undefined;
-    } | {
+      }
+    | {
         key: string;
         label: string;
         type: string;
@@ -141,8 +150,8 @@ export declare const demoProps: {
         br: boolean;
         optionKey: string;
         options: {
-            label: string;
-            value: string;
+          label: string;
+          value: string;
         }[];
         allowClear?: undefined;
         helpText?: undefined;
@@ -158,7 +167,8 @@ export declare const demoProps: {
         minLength?: undefined;
         maxLength?: undefined;
         fields?: undefined;
-    } | {
+      }
+    | {
         key: string;
         label: string;
         type: string;
@@ -181,7 +191,8 @@ export declare const demoProps: {
         minLength?: undefined;
         maxLength?: undefined;
         fields?: undefined;
-    } | {
+      }
+    | {
         key: string;
         label: string;
         type: string;
@@ -189,8 +200,8 @@ export declare const demoProps: {
         editable: boolean;
         br: boolean;
         options: {
-            label: string;
-            value: string;
+          label: string;
+          value: string;
         }[];
         mode: string;
         allowClear?: undefined;
@@ -207,25 +218,29 @@ export declare const demoProps: {
         minLength?: undefined;
         maxLength?: undefined;
         fields?: undefined;
-    } | {
+      }
+    | {
         key: string;
         label: string;
         type: string;
         required: boolean;
         editable: boolean;
         br: boolean;
-        options: ({
-            label: string;
-            value: string;
-            children: {
+        options: (
+          | {
+              label: string;
+              value: string;
+              children: {
                 label: string;
                 value: string;
-            }[];
-        } | {
-            label: string;
-            value: string;
-            children?: undefined;
-        })[];
+              }[];
+            }
+          | {
+              label: string;
+              value: string;
+              children?: undefined;
+            }
+        )[];
         allowClear?: undefined;
         helpText?: undefined;
         hidden?: undefined;
@@ -241,7 +256,8 @@ export declare const demoProps: {
         minLength?: undefined;
         maxLength?: undefined;
         fields?: undefined;
-    } | {
+      }
+    | {
         key: string;
         label: string;
         type: string;
@@ -264,7 +280,8 @@ export declare const demoProps: {
         minLength?: undefined;
         maxLength?: undefined;
         fields?: undefined;
-    } | {
+      }
+    | {
         key: string;
         label: string;
         type: string;
@@ -287,7 +304,8 @@ export declare const demoProps: {
         minLength?: undefined;
         maxLength?: undefined;
         fields?: undefined;
-    } | {
+      }
+    | {
         key: string;
         label: string;
         type: string;
@@ -296,92 +314,101 @@ export declare const demoProps: {
         span: number;
         br: boolean;
         fieldLayout: {
-            span: number;
-            wrapperStyle: {
-                width: string;
-            };
+          span: number;
+          wrapperStyle: {
+            width: string;
+          };
         };
         minLength: number;
         maxLength: number;
-        fields: ({
-            type: string;
-            span: number;
-            br: boolean;
-            fields: ({
-                key: string;
-                label: string;
-                type: string;
-                required: boolean;
-                editable: boolean;
-                br: boolean;
-                options: {
+        fields: (
+          | {
+              type: string;
+              span: number;
+              br: boolean;
+              fields: (
+                | {
+                    key: string;
                     label: string;
-                    value: string;
-                }[];
-                allowClear?: undefined;
-            } | {
-                key: string;
-                label: string;
-                required: boolean;
-                br: boolean;
-                allowClear: boolean;
-                type?: undefined;
-                editable?: undefined;
-                options?: undefined;
-            } | {
-                key: string;
-                label: string;
-                type: string;
-                required: boolean;
-                br: boolean;
-                allowClear: boolean;
-                editable?: undefined;
-                options?: undefined;
-            })[];
-            key?: undefined;
-            placeholder?: undefined;
-            required?: undefined;
-            allowClear?: undefined;
-            style?: undefined;
-            editable?: undefined;
-        } | {
-            key: string;
-            placeholder: string;
-            type: string;
-            required: boolean;
-            br: boolean;
-            allowClear: boolean;
-            style: {
+                    type: string;
+                    required: boolean;
+                    editable: boolean;
+                    br: boolean;
+                    options: {
+                      label: string;
+                      value: string;
+                    }[];
+                    allowClear?: undefined;
+                  }
+                | {
+                    key: string;
+                    label: string;
+                    required: boolean;
+                    br: boolean;
+                    allowClear: boolean;
+                    type?: undefined;
+                    editable?: undefined;
+                    options?: undefined;
+                  }
+                | {
+                    key: string;
+                    label: string;
+                    type: string;
+                    required: boolean;
+                    br: boolean;
+                    allowClear: boolean;
+                    editable?: undefined;
+                    options?: undefined;
+                  }
+              )[];
+              key?: undefined;
+              placeholder?: undefined;
+              required?: undefined;
+              allowClear?: undefined;
+              style?: undefined;
+              editable?: undefined;
+            }
+          | {
+              key: string;
+              placeholder: string;
+              type: string;
+              required: boolean;
+              br: boolean;
+              allowClear: boolean;
+              style: {
                 width: string;
-            };
-            span?: undefined;
-            fields?: undefined;
-            editable?: undefined;
-        } | {
-            key: string;
-            placeholder: string;
-            type: string;
-            required: boolean;
-            editable: boolean;
-            br: boolean;
-            span?: undefined;
-            fields?: undefined;
-            allowClear?: undefined;
-            style?: undefined;
-        } | {
-            key: string;
-            placeholder: string;
-            type: string;
-            required: boolean;
-            br: boolean;
-            allowClear: boolean;
-            span: number;
-            style: {
+              };
+              span?: undefined;
+              fields?: undefined;
+              editable?: undefined;
+            }
+          | {
+              key: string;
+              placeholder: string;
+              type: string;
+              required: boolean;
+              editable: boolean;
+              br: boolean;
+              span?: undefined;
+              fields?: undefined;
+              allowClear?: undefined;
+              style?: undefined;
+            }
+          | {
+              key: string;
+              placeholder: string;
+              type: string;
+              required: boolean;
+              br: boolean;
+              allowClear: boolean;
+              span: number;
+              style: {
                 width: string;
-            };
-            fields?: undefined;
-            editable?: undefined;
-        })[];
+              };
+              fields?: undefined;
+              editable?: undefined;
+            }
+        )[];
         allowClear?: undefined;
         helpText?: undefined;
         hidden?: undefined;
@@ -393,33 +420,37 @@ export declare const demoProps: {
         mode?: undefined;
         rules?: undefined;
         uploadType?: undefined;
-    } | {
+      }
+    | {
         label: string;
         type: string;
         span: number;
         br: boolean;
-        fields: ({
-            key: string;
-            label: string;
-            type: string;
-            required: boolean;
-            editable: boolean;
-            br: boolean;
-            options: {
+        fields: (
+          | {
+              key: string;
+              label: string;
+              type: string;
+              required: boolean;
+              editable: boolean;
+              br: boolean;
+              options: {
                 label: string;
                 value: string;
-            }[];
-            allowClear?: undefined;
-        } | {
-            key: string;
-            label: string;
-            type: string;
-            required: boolean;
-            br: boolean;
-            allowClear: boolean;
-            editable?: undefined;
-            options?: undefined;
-        })[];
+              }[];
+              allowClear?: undefined;
+            }
+          | {
+              key: string;
+              label: string;
+              type: string;
+              required: boolean;
+              br: boolean;
+              allowClear: boolean;
+              editable?: undefined;
+              options?: undefined;
+            }
+        )[];
         key?: undefined;
         required?: undefined;
         allowClear?: undefined;
@@ -437,37 +468,41 @@ export declare const demoProps: {
         fieldLayout?: undefined;
         minLength?: undefined;
         maxLength?: undefined;
-    } | {
+      }
+    | {
         label: string;
         type: string;
         required: boolean;
         editable: boolean;
         span: number;
         br: boolean;
-        fields: ({
-            key: string;
-            label: string;
-            type: string;
-            options: {
+        fields: (
+          | {
+              key: string;
+              label: string;
+              type: string;
+              options: {
                 label: string;
                 value: string;
                 children: {
-                    label: string;
-                    value: string;
+                  label: string;
+                  value: string;
                 }[];
-            }[];
-            required: boolean;
-            editable: boolean;
-            br: boolean;
-        } | {
-            key: string;
-            label: string;
-            type: string;
-            required: boolean;
-            editable: boolean;
-            br: boolean;
-            options?: undefined;
-        })[];
+              }[];
+              required: boolean;
+              editable: boolean;
+              br: boolean;
+            }
+          | {
+              key: string;
+              label: string;
+              type: string;
+              required: boolean;
+              editable: boolean;
+              br: boolean;
+              options?: undefined;
+            }
+        )[];
         key?: undefined;
         allowClear?: undefined;
         helpText?: undefined;
@@ -483,28 +518,32 @@ export declare const demoProps: {
         fieldLayout?: undefined;
         minLength?: undefined;
         maxLength?: undefined;
-    } | {
+      }
+    | {
         label: string;
         type: string;
         span: number;
         br: boolean;
-        fields: ({
-            key: string;
-            label: string;
-            type: string;
-            dataSource: string[];
-            required: boolean;
-            editable: boolean;
-            br: boolean;
-        } | {
-            key: string;
-            label: string;
-            type: string;
-            required: boolean;
-            editable: boolean;
-            br: boolean;
-            dataSource?: undefined;
-        })[];
+        fields: (
+          | {
+              key: string;
+              label: string;
+              type: string;
+              dataSource: string[];
+              required: boolean;
+              editable: boolean;
+              br: boolean;
+            }
+          | {
+              key: string;
+              label: string;
+              type: string;
+              required: boolean;
+              editable: boolean;
+              br: boolean;
+              dataSource?: undefined;
+            }
+        )[];
         key?: undefined;
         required?: undefined;
         allowClear?: undefined;
@@ -522,5 +561,6 @@ export declare const demoProps: {
         fieldLayout?: undefined;
         minLength?: undefined;
         maxLength?: undefined;
-    })[];
+      }
+  )[];
 };

@@ -1,12 +1,10 @@
 {
   "name": "custom-form-react",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "dependencies": {
-    "@ant-design/icons": "^4.2.1",
     "@types/lodash": "4.14.157",
     "@types/react": "16.9.34",
     "@types/react-dom": "^16.9.6",
-    "antd": "^4.3.5",
     "moment": "2.27.0",
     "react": "~16.8.6",
     "react-dom": "~16.8.6"
@@ -153,7 +151,7 @@
     ]
   },
   "publishConfig": {
-    "registry": "http://nexus.gongwuyun.com/nexus/repository/npm-hosted/"
+    "registry": "https://registry.npmjs.org/"
   },
   "analyz": "NODE_ENV=production npm_config_report=true"
 }

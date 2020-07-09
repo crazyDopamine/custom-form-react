@@ -1,5 +1,5 @@
-import React, { ComponentClass, ReactNode } from "react"
-import { defaultsDeep, get, pick, set, toString, cloneDeep } from "lodash"
+import React, { ComponentClass, ReactNode } from 'react';
+import { defaultsDeep, get, pick, set, toString, cloneDeep, omit, isFunction } from 'lodash';
 import {
   BaseFormProps,
   BaseFormState,
@@ -15,15 +15,14 @@ import {
   BaseFormInterface,
   FormValidateTrigger,
   FormRenderFieldOptions,
-  FieldClass,
-} from "./types"
-import { CustomRenderFieldArray } from "./customRenderFieldArray"
-import { CustomRenderFieldObject } from "./customRenderFieldObject"
-import { validate } from "./validate"
-import { omit, isFunction } from "lodash"
-import ComponentMap from "./componentMap"
+  FieldClass
+} from './types';
+import { CustomRenderFieldArray } from './customRenderFieldArray';
+import { CustomRenderFieldObject } from './customRenderFieldObject';
+import { validate } from './validate';
+import ComponentMap from './componentMap';
 
-const fieldComponentMap = new ComponentMap()
+const fieldComponentMap = new ComponentMap();
 
 /**
  * 注册组件
@@ -34,9 +33,9 @@ export function registorComponent(key: string, component: FieldClass) {
   if (fieldComponentMap.has(key)) {
     console.warn(
       `component named ${key} has been registered, the registered component will be replaced!`
-    )
+    );
   }
-  fieldComponentMap.register(key, component)
+  fieldComponentMap.register(key, component);
 }
 
 /**
@@ -44,54 +43,57 @@ export function registorComponent(key: string, component: FieldClass) {
  * @param key
  */
 export function unRegistorComponent(key: string) {
-  fieldComponentMap.unRegister(key)
+  fieldComponentMap.unRegister(key);
 }
 
 export class BaseForm extends React.Component<BaseFormProps, BaseFormState>
   implements BaseFormInterface {
-  static defaultProps = {
+  public static defaultProps = {
     validateTrigger: FormValidateTrigger.onChange,
     validateFirst: false,
     initialValue: {},
     fields: [],
-    rules: {} as Rules,
+    rules: {}
+  };
+  public static getDerivedStateFromProps(
+    nextProps: Readonly<BaseFormProps>,
+    preState: BaseFormState
+  ): BaseFormState {
+    const state: BaseFormState = {
+      ...preState
+    };
+    if (nextProps.value && nextProps.value !== preState.value) {
+      state.value = nextProps.value as BaseFormValue;
+    }
+    if (nextProps.fields !== preState.fields) {
+      state.fields = nextProps.fields;
+      state.fieldsMap = getFieldsMap(nextProps.fields || []);
+    }
+    return state;
   }
-  rules: Rules = {}
-  options = new Map<string, object[]>()
-  fieldComponentMap: ComponentMap = fieldComponentMap
+  private rules: Rules = {};
+  private options = new Map<string, object[]>();
+  private fieldComponentMap: ComponentMap = fieldComponentMap;
+  private defaultField = 'input';
+  private validateShowMessageFn?: (msg: string, validateResult: ValidateResult) => void;
+  private formContainerRender?: (
+    children: React.ReactNode,
+    props: BaseFormProps
+  ) => React.ReactNode;
+  private formFieldContainerRender?: (
+    children: React.ReactNode,
+    fieldSet: FieldProps,
+    domKey: string
+  ) => React.ReactNode;
 
-  constructor(props: Readonly<BaseFormProps>) {
-    super(props)
+  public constructor(props: Readonly<BaseFormProps>) {
+    super(props);
     this.state = {
       value: props.value || cloneDeep(props.initialValue) || {},
       fields: props.fields || [],
       fieldsMap: getFieldsMap(props.fields || []),
-      errors: {} as ValidateErrors,
-    } as BaseFormState
-  }
-  validateShowMessageFn?: (msg: string, validateResult: ValidateResult) => void
-  defaultField: string = "input"
-  formContainerRender?: (children: React.ReactNode, props: BaseFormProps) => React.ReactNode
-  formFieldContainerRender?: (
-    children: React.ReactNode,
-    fieldSet: FieldProps,
-    domKey: string
-  ) => React.ReactNode
-  static getDerivedStateFromProps(
-    nextProps: Readonly<BaseFormProps>,
-    preState: BaseFormState
-  ): BaseFormState {
-    const state = {
-      ...preState,
-    } as BaseFormState
-    if (nextProps.value && nextProps.value !== preState.value) {
-      state.value = nextProps.value as BaseFormValue
-    }
-    if (nextProps.fields !== preState.fields) {
-      state.fields = nextProps.fields
-      state.fieldsMap = getFieldsMap(nextProps.fields || [])
-    }
-    return state
+      errors: {}
+    };
   }
 
   /**
@@ -99,14 +101,16 @@ export class BaseForm extends React.Component<BaseFormProps, BaseFormState>
    * @param fieldKeys 需要重设的值
    */
   public reset(fieldKeys?: string[]): void {
-    const { initialValue } = this.props
+    const { initialValue } = this.props;
     if (fieldKeys) {
-      const { value } = this.state
-      fieldKeys.forEach(k => (value[k] = undefined))
-      defaultsDeep(value, pick(initialValue, fieldKeys))
-      this.setState({ value, errors: {} })
+      const { value } = this.state;
+      fieldKeys.forEach((k: string) => {
+        value[k] = undefined;
+      });
+      defaultsDeep(value, pick(initialValue, fieldKeys));
+      this.setState({ value, errors: {} });
     } else {
-      this.setState({ value: cloneDeep(initialValue) as BaseFormValue, errors: {} })
+      this.setState({ value: cloneDeep(initialValue) as BaseFormValue, errors: {} });
     }
   }
 
@@ -114,7 +118,7 @@ export class BaseForm extends React.Component<BaseFormProps, BaseFormState>
    * 重置字段验证
    */
   public resetValidate(): void {
-    this.setState({ errors: {} })
+    this.setState({ errors: {} });
   }
 
   /**
@@ -122,20 +126,20 @@ export class BaseForm extends React.Component<BaseFormProps, BaseFormState>
    * @param value 设置的表单值
    * @param reset 是否重置
    */
-  public setValue(value: BaseFormValue, reset: boolean = false): void {
+  public setValue(value: BaseFormValue, reset = false): void {
     if (!reset) {
-      value = defaultsDeep(value, this.state.value)
-      this.setState({ value })
-      return
+      value = defaultsDeep(value, this.state.value);
+      this.setState({ value });
+      return;
     }
-    this.setState({ value, errors: {} })
+    this.setState({ value, errors: {} });
   }
 
   /**
    * 获取表单值
    */
   public getValue(): BaseFormValue {
-    return this.state.value as BaseFormValue
+    return this.state.value as BaseFormValue;
   }
 
   /**
@@ -143,32 +147,10 @@ export class BaseForm extends React.Component<BaseFormProps, BaseFormState>
    * @param key
    * @param options
    */
-  setOption(key: string, options: object[]): void {
-    this.options.set(key, options)
-    //有待优化
-    this.forceUpdate()
-  }
-
-  /**
-   * 注册规则
-   * @param fieldProps
-   */
-  private registerRule(fieldProps: FieldProps) {
-    const { fieldSet } = fieldProps
-    if (!fieldSet.key) {
-      return null
-    }
-    this.rules = {
-      ...this.rules,
-      [fieldSet.key || ""]: {
-        type: RuleType.any,
-        fieldProps: fieldProps,
-        label: fieldSet.validateLabel || fieldSet.label || fieldSet.placeholder,
-        ...pick(fieldSet, ["key", "required", "maxLength", "minLength", "max", "min", "validator"]),
-        ...(fieldProps.fieldSet.rules || {}),
-        ...((fieldProps.fieldSet.validator && { validator: fieldProps.fieldSet.validator }) || {}),
-      } as RuleItem,
-    }
+  public setOption(key: string, options: object[]): void {
+    this.options.set(key, options);
+    // 有待优化
+    this.forceUpdate();
   }
 
   /**
@@ -177,20 +159,16 @@ export class BaseForm extends React.Component<BaseFormProps, BaseFormState>
    * @param isShowMsg 是否显示消息
    * @param isClear 是否清空验证
    */
-  public validate(
-    fieldKeys?: string[],
-    isShowMsg: boolean = true,
-    isClear: boolean = true
-  ): Promise<ValidateResult> {
+  public validate(fieldKeys?: string[], isShowMsg = true, isClear = true): Promise<ValidateResult> {
     return new Promise<ValidateResult>(
       (resolve: (result: ValidateResult) => void, reject: (result: ValidateResult) => void) => {
-        const { value } = this.state
-        const { rules } = this
+        const { value } = this.state;
+        const { rules } = this;
         validate(value, (fieldKeys && pick(rules, fieldKeys)) || rules).then((result): void => {
-          const { errors, errorList, valid } = result
+          const { errors, errorList, valid } = result;
           if (!valid) {
-            const message = errorList[0].message
-            this.validateShowMessageFn && this.validateShowMessageFn.call(this, message, result)
+            const message = errorList[0].message;
+            this.validateShowMessageFn && this.validateShowMessageFn(message, result);
             this.setState(
               {
                 errors: isClear
@@ -199,13 +177,13 @@ export class BaseForm extends React.Component<BaseFormProps, BaseFormState>
                       ...((fieldKeys && omit(this.state.errors, fieldKeys)) ||
                         this.state.errors ||
                         {}),
-                      ...errors,
-                    },
+                      ...errors
+                    }
               },
               () => {
-                reject(result)
+                reject(result);
               }
-            )
+            );
           } else {
             this.setState({
               errors: isClear
@@ -214,28 +192,69 @@ export class BaseForm extends React.Component<BaseFormProps, BaseFormState>
                     ...((fieldKeys && omit(this.state.errors, fieldKeys)) ||
                       this.state.errors ||
                       {}),
-                    ...errors,
-                  },
-            })
-            resolve(result)
+                    ...errors
+                  }
+            });
+            resolve(result);
           }
-        })
+        });
       }
-    )
+    );
+  }
+
+  public render(): React.ReactNode {
+    const { fields, value } = this.state;
+    const { renderField } = this;
+    const { beforeRender } = this.props;
+    this.rules = {};
+    let toRenderFields = [...fields].filter((f) => isFunction(f.hidden) || !f.hidden);
+    if (beforeRender) {
+      toRenderFields = [...beforeRender(fields, value)];
+    }
+    return this.formContainerRender
+      ? this.formContainerRender(
+          toRenderFields.map((f, i) => renderField.call(this, f, toString(i))).filter(Boolean),
+          this.props
+        )
+      : toRenderFields.map((f, i) => renderField.call(this, f, toString(i))).filter(Boolean);
+  }
+
+  /**
+   * 注册规则
+   * @param fieldProps
+   */
+  private registerRule(fieldProps: FieldProps) {
+    const { fieldSet } = fieldProps;
+    if (!fieldSet.key) {
+      return null;
+    }
+    const ruleItem: RuleItem = {
+      type: RuleType.any,
+      fieldProps: fieldProps,
+      key: fieldProps.key || '',
+      label: fieldSet.validateLabel || fieldSet.label || fieldSet.placeholder,
+      ...pick(fieldSet, ['key', 'required', 'maxLength', 'minLength', 'max', 'min', 'validator']),
+      ...(fieldProps.fieldSet.rules || {}),
+      ...((fieldProps.fieldSet.validator && { validator: fieldProps.fieldSet.validator }) || {})
+    };
+    this.rules = {
+      ...this.rules,
+      [fieldSet.key || '']: ruleItem
+    };
   }
 
   private onFieldChange(fieldProps: FieldProps, k: string, v: any, ...args: any[]) {
-    const field = fieldProps.fieldSet
-    const { onChange, validateTrigger } = this.props
-    const { value } = this.state
-    set(value, k, v)
-    this.setState({ value })
+    const field = fieldProps.fieldSet;
+    const { onChange, validateTrigger } = this.props;
+    const { value } = this.state;
+    set(value, k, v);
+    this.setState({ value });
     if (field.onChange) {
-      field.onChange(v, { form: this, field: fieldProps }, ...args)
+      field.onChange(v, { form: this, field: fieldProps }, ...args);
     }
-    if (onChange) onChange(value, { changeKey: k, changeValue: v, form: this, field })
+    if (onChange) onChange(value, { changeKey: k, changeValue: v, form: this, field });
     if (validateTrigger == FormValidateTrigger.onChange && field.key) {
-      this.validate([field.key], true, false).then()
+      this.validate([field.key], true, false).then();
     }
   }
 
@@ -245,26 +264,26 @@ export class BaseForm extends React.Component<BaseFormProps, BaseFormState>
     keyNest?: string[],
     fieldOptions?: FormRenderFieldOptions
   ): ReactNode {
-    const { editable } = this.props
-    const { value, errors } = this.state
-    const { key = "", customFieldSet, optionKey } = field
-    keyNest = [key, ...(keyNest || [])]
-    const valueNest = [...keyNest.map(k => get(value, k, undefined)), value]
+    const { editable } = this.props;
+    const { value, errors } = this.state;
+    const { key = '', customFieldSet, optionKey } = field;
+    keyNest = [key, ...(keyNest || [])];
+    const valueNest = [...keyNest.map((k) => get(value, k, undefined)), value];
     if (customFieldSet) {
-      field = { ...field, ...customFieldSet(valueNest, field) }
+      field = { ...field, ...customFieldSet(valueNest, field) };
     }
-    const { type = "", render } = field
+    const { type = '', render } = field;
     const Component =
       this.fieldComponentMap && this.fieldComponentMap.has(type)
         ? this.fieldComponentMap.get(type)
-        : this.fieldComponentMap.get(this.defaultField)
-    const fieldValue = get(value, key, undefined)
-    let options = this.options.get(key) || field.options
+        : this.fieldComponentMap.get(this.defaultField);
+    const fieldValue = get(value, key, undefined);
+    let options = this.options.get(key) || field.options;
     if (optionKey && this.options.get(optionKey)) {
-      options = this.options.get(optionKey)
+      options = this.options.get(optionKey);
     }
-    const fieldEditable = [field.editable, editable].find(i => i !== null && i !== undefined)
-    let props = {
+    const fieldEditable = [field.editable, editable].find((i) => i !== null && i !== undefined);
+    let props: FieldProps = {
       key: key,
       domKey: domKey || key,
       keyNest,
@@ -272,12 +291,12 @@ export class BaseForm extends React.Component<BaseFormProps, BaseFormState>
       fieldSet: field,
       form: this,
       value: fieldValue,
-      error: errors[field.key || ""],
+      error: errors[field.key || ''],
       editable: fieldEditable !== undefined && fieldEditable !== null ? fieldEditable : true,
-      options,
-    } as FieldProps
-    props.onChange = this.onFieldChange.bind(this, props, key)
-    props.onBlur = this.onFieldChange.bind(this, props, key)
+      options
+    };
+    props.onChange = this.onFieldChange.bind(this, props, key);
+    props.onBlur = this.onFieldChange.bind(this, props, key);
     if (
       Component &&
       (Component.prototype instanceof CustomRenderFieldArray ||
@@ -285,59 +304,40 @@ export class BaseForm extends React.Component<BaseFormProps, BaseFormState>
     ) {
       props = {
         ...props,
-        renderField: this.renderField.bind(this),
-      } as CustomRenderFieldProps
+        renderField: this.renderField.bind(this)
+      };
     }
     if (
       (field.hidden && isFunction(field.hidden) && field.hidden(props)) ||
       (field.hidden && !isFunction(field.hidden))
     ) {
-      return null
+      return null;
     }
-    this.registerRule(props)
-    let fieldDom = null
+    this.registerRule(props);
+    let fieldDom = null;
     if (render) {
-      fieldDom = render.call(this, props, { renderField: this.renderField.bind(this) })
+      fieldDom = render.call(this, props, { renderField: this.renderField.bind(this) });
     } else if (Component) {
-      fieldDom = React.createElement(Component as ComponentClass, props) //<Component {...props} key={domKey || key} />
+      fieldDom = React.createElement(Component as ComponentClass, props); // <Component {...props} key={domKey || key} />
     }
-    const componentOnly = fieldOptions && fieldOptions.componentOnly
+    const componentOnly = fieldOptions?.componentOnly;
     const formFieldContainerRender =
-      (!!fieldOptions && fieldOptions.formFieldContainerRender) || this.formFieldContainerRender
+      (!!fieldOptions && fieldOptions.formFieldContainerRender) || this.formFieldContainerRender;
     return (
       (!componentOnly &&
         !!formFieldContainerRender &&
         formFieldContainerRender(fieldDom, props, domKey || key)) ||
       fieldDom
-    )
-  }
-
-  render(): React.ReactNode {
-    const { fields, value } = this.state
-    const { renderField } = this
-    const { beforeRender } = this.props
-    this.rules = {}
-    let toRenderFields = [...fields].filter(f => isFunction(f.hidden) || !f.hidden)
-    if (beforeRender) {
-      toRenderFields = [...beforeRender(fields, value)]
-    }
-    return this.formContainerRender
-      ? this.formContainerRender(
-          toRenderFields.map((f, i) => renderField.call(this, f, toString(i))).filter(Boolean),
-          this.props
-        )
-      : toRenderFields.map((f, i) => renderField.call(this, f, toString(i))).filter(Boolean)
+    );
   }
 }
 
 function getFieldsMap(fields: Array<FieldSet> = []): Map<string, FieldSet> {
-  const fieldsMap = new Map<string, FieldSet>()
+  const fieldsMap = new Map<string, FieldSet>();
   fields
-    .filter(f => f.key)
-    .forEach(f => {
-      fieldsMap.set(f.key as string, f)
-    })
-  return fieldsMap
+    .filter((f) => f.key)
+    .forEach((f) => {
+      fieldsMap.set(f.key as string, f);
+    });
+  return fieldsMap;
 }
-
-BaseForm.prototype.fieldComponentMap = fieldComponentMap

@@ -1,6 +1,6 @@
 // import React from "react"
-import { CustomRenderFieldState, CustomRenderFieldProps, FieldSet } from "./types"
-import { BaseField } from "./baseField"
+import { CustomRenderFieldState, CustomRenderFieldProps, FieldSet } from './types';
+import { BaseField } from './baseField';
 
 export class CustomRenderFieldObject<
   P extends CustomRenderFieldProps,
@@ -20,15 +20,14 @@ export class CustomRenderFieldObject<
   //   }
   //   return state
   // }
-  constructor(props: P) {
-    super(props)
-    this.state = {} as S
+  public constructor(props: P) {
+    super(props);
   }
-  createField(field: FieldSet): FieldSet {
-    const { fieldSet } = this.props
+  protected createField(field: FieldSet): FieldSet {
+    const { fieldSet } = this.props;
     return {
       ...field,
-      key: `${fieldSet.key}.${field.key}`,
-    }
+      key: `${fieldSet.key}.${field.key}`
+    };
   }
 }

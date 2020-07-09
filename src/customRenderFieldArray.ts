@@ -1,5 +1,5 @@
-import { CustomRenderFieldState, CustomRenderFieldProps, FieldSet } from "./types"
-import { BaseField } from "./baseField"
+import { CustomRenderFieldState, CustomRenderFieldProps, FieldSet } from './types';
+import { BaseField } from './baseField';
 
 export class CustomRenderFieldArray<
   P extends CustomRenderFieldProps,
@@ -15,23 +15,22 @@ export class CustomRenderFieldArray<
   //   }
   //   return state
   // }
-  constructor(props: P) {
-    super(props)
-    this.state = {} as S
+  public constructor(props: P) {
+    super(props);
   }
-  add(data?: any) {
-    const { value, onChange } = this.props
-    if (onChange) onChange([...(value || []), data || {}])
+  protected add(data?: any) {
+    const { value, onChange } = this.props;
+    if (onChange) onChange([...(value || []), data || {}]);
   }
-  remove(index: number) {
-    const { value, onChange } = this.props
-    if (onChange) onChange((value || []).filter((item: object, i: number) => i != index))
+  protected remove(index: number) {
+    const { value, onChange } = this.props;
+    if (onChange) onChange((value || []).filter((item: object, i: number) => i != index));
   }
-  createField(field: FieldSet, rowIndex: number): FieldSet {
-    const { fieldSet } = this.props
+  protected createField(field: FieldSet, rowIndex: number): FieldSet {
+    const { fieldSet } = this.props;
     return {
       ...field,
-      key: `${fieldSet.key}[${rowIndex}].${field.key}`,
-    }
+      key: `${fieldSet.key}[${rowIndex}].${field.key}`
+    };
   }
 }

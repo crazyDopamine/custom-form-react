@@ -11,5 +11,5 @@ export declare function compareObj(obj1: object, obj2: object, exclude?: string[
  * @param {*} e
  */
 export declare function stopPropagation(e: any): void;
-export * from "./option";
-export * from "./format";
+export * from './option';
+export * from './format';

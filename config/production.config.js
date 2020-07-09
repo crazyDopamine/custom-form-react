@@ -5,17 +5,16 @@ module.exports = function (config) {
     externals: [
       function (context, request, callback) {
         if (/^antd\/es\//.test(request)) {
-          return callback(null, "commonjs " + request)
+          return callback(null, 'commonjs ' + request);
         }
-        callback()
+        callback();
       },
       {
-        antd: "antd",
-        lodash: "lodash",
-        moment: "moment",
-        react: "react",
-        "react-dom": "react-dom",
-      },
-    ],
-  }
-}
+        lodash: 'lodash',
+        moment: 'moment',
+        react: 'react',
+        'react-dom': 'react-dom'
+      }
+    ]
+  };
+};
